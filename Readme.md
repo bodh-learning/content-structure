@@ -5,7 +5,7 @@ Helps manage a plugin's content architecture including:
  1. Custom Post Types
  1. Custom Taxonomies
  1. Custom Tables for Custom Content
- 1. Metadata API support for Custom Content
+ 1. Metadata API support for Custom Content. See: [Meta for Custom Objects in WordPress](http://hookrefineandtinker.com/2015/02/meta-for-custom-objects-in-wordpress/)
 
 ## Usage
 

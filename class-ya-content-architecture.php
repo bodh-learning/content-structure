@@ -80,7 +80,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 			$this->initialise_table_names();
 		}
-
+		
 		/**
 		 * Initialises custom table names
 		 * 
@@ -92,7 +92,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 			foreach ( $this->architecture['custom'] as $name => $params ) {
 
-				$this->tables[$name] = $wpdb->prefix . $this->prefix . $this->prettify( $name );
+				$this->tables[$name] = $wpdb->prefix . $this->prefix . '_' . $this->prettify( $name );
 
 				if ( empty( $params ) ) {
 					continue;
@@ -103,7 +103,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 				}
 
 				if ( $params['has_meta'] === true ) {
-					$this->meta_tables[$name] = $wpdb->prefix . $this->prefix . $this->prettify( $name ) . '_meta';
+					$this->meta_tables[$name] = $wpdb->prefix . $this->prefix . '_' . $this->prettify( $name ) . '_meta';
 				}
 			}
 		}
@@ -151,7 +151,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 			foreach ( $this->tables as $file_name => $table_name ) {
 
-				$sql = include_once $this->schema_path . 'custom/' . $file_name . '.php';
+				$sql = file_get_contents($this->schema_path . 'custom/' . $file_name . '.php');
 
 				$sql = sprintf( $sql, $table_name );
 
@@ -180,7 +180,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 			foreach ( $this->meta_tables as $index => $table_name ) {
 
-				$sql = include_once $this->schema_path . 'custom-meta/custom-meta.php';
+				$sql = file_get_contents($this->schema_path . 'custom-meta/custom-meta.php');
 				
 				$key = $this->prettify( $index );
 
@@ -201,16 +201,14 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 			add_option( $this->prefix . '_db_version', $this->version );
 		}
-
-		/**
-		 * Delete all tables
+		
+		/** 
+		 * Returns all table names (for uninstallation)
+		 * 
+		 * @return array
 		 */
-		public function uninstall() {
-			$tables = $this->tables + $this->meta_tables;
-
-			foreach ( $tables as $index => $table_name ) {
-				$sql = "DROP TABLE IF EXISTS $table_name";
-			}
+		public function get_table_names(){
+			return $this->tables + $this->meta_tables;
 		}
 
 		/*
@@ -228,8 +226,8 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 			add_action( 'init', array( $this, 'init_wp_types' ) );
 
 			// initialise meta tables
-			add_action( 'init', array( $this, 'hook_custom_meta' ), 0 );
-			add_action( 'switch_blog', array( $this, 'hook_custom_meta' ), 0 );
+			add_action( 'init', array( $this, 'hook_meta_tables' ), 0 );
+			add_action( 'switch_blog', array( $this, 'hook_meta_tables' ), 0 );
 		}
 
 		/**
@@ -253,7 +251,8 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 				$arguments = include_once $this->schema_path . $type . '/' . $ind_type . '.php';
 
 				// register post_type or taxonomy
-				${'register_' . $type}( $ind_type, $arguments );
+				$functionName = 'register_' . $type;
+				$functionName( $ind_type, $arguments );
 			}
 		}
 

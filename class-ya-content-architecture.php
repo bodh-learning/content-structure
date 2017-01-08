@@ -234,25 +234,43 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 		 * Initialises cpts & taxonomies
 		 */
 		public function init_wp_types() {
-			$this->register_wp_types( 'post_type' );
-			$this->register_wp_types( 'taxonomy' );
+			$this->register_post_types();
+			$this->register_taxonomies();
 		}
 
 		/**
-		 * Registers cpts & taxonomies
+		 * Registers cpts 
 		 * 
-		 * @param string $type post_type or taxonomies
 		 */
-		public function register_wp_types( $type ) {
+		public function register_post_types() {
 
-			foreach ( $this->architecture[$type] as $ind_type ) {
+			foreach ( $this->architecture['post_type'] as $post_type ) {
 
 				// include the schema
-				$arguments = include_once $this->schema_path . $type . '/' . $ind_type . '.php';
+				$arguments = include_once $this->schema_path  . 'post_type/' . $post_type . '.php';
 
-				// register post_type or taxonomy
-				$functionName = 'register_' . $type;
-				$functionName( $ind_type, $arguments );
+				// register post_type
+				register_post_type( $post_type, $arguments );
+			}
+		}
+		
+		/**
+		 * Registers taxonomies
+		 * 
+		 */
+		public function register_taxonomies() {
+
+			foreach ( $this->architecture['taxonomy'] as $taxonomy=>$object ) {
+				
+				if(empty($object)){
+					$object = array();
+				}
+
+				// include the schema
+				$arguments = include_once $this->schema_path . 'taxonomy/' . $taxonomy . '.php';
+
+				// register taxonomy
+				register_taxonomy( $taxonomy, $object, $arguments );
 			}
 		}
 

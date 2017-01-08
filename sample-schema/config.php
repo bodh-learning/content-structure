@@ -4,7 +4,8 @@ return $architecture = array(
 		'books',
 	),
 	'taxonomy' => array(
-		'authors',
+		'authors' => array('books'),
+		'readers' => array(),
 	),
 	'custom' => array(
 		// this will add support for Metadata API

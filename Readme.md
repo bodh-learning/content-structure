@@ -14,7 +14,7 @@ Helps manage a plugin's content architecture including:
  1. See `/sample-schema` directory for examples.
  1. **Do not change** the directory structure.
  1. **Do not edit** `/custom-meta/custom-meta.php`.
- 1. Add one schema file each (using the sample) for every custom post type in `/post-type/`.
+ 1. Add one schema file each (using the sample) for every custom post type in `/post_type/`.
  1. Add one schema file each (using the sample) for every custom taxonomy in `/taxonomy/`.
  1. Add one schema file each (using the sample) for every custom table in `/custom/`.
  1. Create a config file called `config.php` inside the root of the schema directory.

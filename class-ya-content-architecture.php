@@ -3,6 +3,11 @@
 /**
  * Contains main architure class
  * 
+ * @version 0.1
+ * @author Saurabh Shukla <saurabh@yapapaya.com>
+ * @author Yapapaya <dev@yapapaya.com>
+ * @license GPL-2.0
+ * @license https://opensource.org/licenses/GPL-2.0 GNU Public License
  * @package YA_Content_Architecture
  */
 if ( !class_exists( 'YA_Content_Architecture' ) ) {

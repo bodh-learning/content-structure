@@ -108,7 +108,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 				}
 
 				if ( $params['has_meta'] === true ) {
-					$this->meta_tables[$name] = $wpdb->prefix . $this->prefix . '_' . $this->prettify( $name ) . '_meta';
+					$this->meta_tables[$name] = $wpdb->prefix . $this->prefix . '_' . $this->prettify( $name ) . 'meta';
 				}
 			}
 		}
@@ -288,10 +288,10 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 			global $wpdb;
 
-			foreach ( $this->meta_tables as $table ) {
-				$wpdb->eventmeta = $wpdb->prefix . $table;
+			foreach ( $this->meta_tables as $name=>$table ) {
+				$wpdb->$name = $this->prettify( $name ) . 'meta';
 
-				$wpdb->tables[] = $table;
+				$wpdb->tables[] = $this->prettify( $name ) . 'meta';
 			}
 		}
 

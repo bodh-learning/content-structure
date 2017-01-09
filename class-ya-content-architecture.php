@@ -187,9 +187,7 @@ if ( !class_exists( 'YA_Content_Architecture' ) ) {
 
 				$sql = file_get_contents($this->schema_path . 'custom-meta/custom-meta.php');
 				
-				$key = $this->prettify( $index );
-
-				$sql = sprintf( $sql, $table_name, $key, $key );
+				$sql = sprintf( $sql, $table_name );
 
 				$sql .= $charset_collate . ';';
 
